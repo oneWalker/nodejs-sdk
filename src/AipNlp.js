@@ -39,6 +39,7 @@ const TOPIC_PATH = '/rpc/2.0/nlp/v1/topic';
 const ECNET_PATH = '/rpc/2.0/nlp/v1/ecnet';
 const EMOTION_PATH = '/rpc/2.0/nlp/v1/emotion';
 const NEWS_SUMMARY_PATH = '/rpc/2.0/nlp/v1/news_summary';
+const ADDRESS_PATH = '/rpc/2.0/nlp/v1/address';
 
 
 /**
@@ -288,7 +289,7 @@ class AipNlp extends BaseClient {
     /**
      * 新闻摘要接口接口
      *
-     * @param {string} content - 字符串（限200字符数）字符串仅支持GBK编码，长度需小于200字符数（即400字节），请输入前确认字符数没有超限，若字符数超长会返回错误。标题在算法中具有重要的作用，若文章确无标题，输入参数的“标题”字段为空即可
+     * @param {string} content - 字符串（限3000字符数以内）字符串仅支持GBK编码，长度需小于3000字符数（即6000字节），请输入前确认字符数没有超限，若字符数超长会返回错误。正文中如果包含段落信息，请使用"\n"分隔，段落信息算法中有重要的作用，请尽量保留
      * @param {integer} maxSummaryLen - 此数值将作为摘要结果的最大长度。例如：原文长度1000字，本参数设置为150，则摘要结果的最大长度是150字；推荐最优区间：200-500字
      * @param {Object} options - 可选参数对象，key: value都为string类型
      * @description options - options列表:
@@ -300,6 +301,22 @@ class AipNlp extends BaseClient {
             content: content,
             max_summary_len: maxSummaryLen,
             targetPath: NEWS_SUMMARY_PATH
+        };
+        return this.commonImpl(objectTools.merge(param, options));
+    }
+
+    /**
+     * 地址识别接口接口
+     *
+     * @param {string} text - 待识别的文本内容，不超过1000字节
+     * @param {Object} options - 可选参数对象，key: value都为string类型
+     * @description options - options列表:
+     * @return {Promise} - 标准Promise对象
+     */
+    address(text, options) {
+        let param = {
+            text: text,
+            targetPath: ADDRESS_PATH
         };
         return this.commonImpl(objectTools.merge(param, options));
     }
